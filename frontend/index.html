@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Transcritor 2027 — IA de Transcrição</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Background Effects -->
+        <div class="bg-gradient"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="logo">
+                    <i class="fas fa-wave-square"></i>
+                    <h1>Transcritor 2027</h1>
+                </div>
+                <p class="subtitle">Transcrição de áudio/vídeo com IA de última geração</p>
+            </header>
+
+            <!-- Upload Section -->
+            <section class="upload-section glass-panel">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".mp4,.mov,.avi,.mkv,.mp3,.wav,.m4a,.webm,.flac" hidden>
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h2>Arraste seu arquivo aqui</h2>
+                    <p>ou clique para selecionar</p>
+                    <div class="supported-formats">
+                        <span class="format-badge">MP4</span>
+                        <span class="format-badge">MOV</span>
+                        <span class="format-badge">MP3</span>
+                        <span class="format-badge">WAV</span>
+                        <span class="format-badge">MKV</span>
+                    </div>
+                </div>
+                
+                <!-- File Info -->
+                <div class="file-info hidden" id="fileInfo">
+                    <div class="file-details">
+                        <i class="fas fa-file-audio"></i>
+                        <div class="file-meta">
+                            <span class="file-name" id="fileName"></span>
+                            <span class="file-size" id="fileSize"></span>
+                        </div>
+                    </div>
+                    <button class="btn-remove" id="btnRemove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="settings-section glass-panel hidden" id="settingsSection">
+                <h3><i class="fas fa-sliders-h"></i> Configurações</h3>
+                
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label for="modelSelect">
+                            <i class="fas fa-brain"></i> Modelo de IA
+                        </label>
+                        <select id="modelSelect">
+                            <option value="tiny">⚡ Tiny (Mais rápido)</option>
+                            <option value="base">🚀 Base (Rápido)</option>
+                            <option value="small" selected>⚖️ Small (Equilibrado)</option>
+                            <option value="medium">🎯 Medium (Preciso)</option>
+                            <option value="large-v3">🏆 Large-v3 (Máximo)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="languageSelect">
+                            <i class="fas fa-language"></i> Idioma
+                        </label>
+                        <select id="languageSelect">
+                            <option value="pt">🇧🇷 Português</option>
+                            <option value="en">🇺🇸 English</option>
+                            <option value="es">🇪🇸 Español</option>
+                            <option value="fr">🇫🇷 Français</option>
+                            <option value="de">🇩🇪 Deutsch</option>
+                            <option value="auto">🔍 Auto-detect</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="formatSelect">
+                            <i class="fas fa-file-export"></i> Formato de Saída
+                        </label>
+                        <select id="formatSelect">
+                            <option value="txt">📄 TXT</option>
+                            <option value="docx">📝 DOCX (Word)</option>
+                            <option value="pdf">📕 PDF</option>
+                            <option value="all">📦 Todos</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn-primary btn-large" id="btnTranscribe">
+                    <i class="fas fa-magic"></i>
+                    <span>Iniciar Transcrição</span>
+                </button>
+            </section>
+
+            <!-- Progress Section -->
+            <section class="progress-section glass-panel hidden" id="progressSection">
+                <div class="progress-header">
+                    <h3><i class="fas fa-spinner fa-spin"></i> Processando</h3>
+                    <span class="progress-status" id="progressStatus">Aguardando...</span>
+                </div>
+                
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                
+                <div class="progress-steps">
+                    <div class="step" id="step1">
+                        <i class="fas fa-upload"></i>
+                        <span>Upload</span>
+                    </div>
+                    <div class="step" id="step2">
+                        <i class="fas fa-file-audio"></i>
+                        <span>Extrair Áudio</span>
+                    </div>
+                    <div class="step" id="step3">
+                        <i class="fas fa-brain"></i>
+                        <span>Transcrever</span>
+                    </div>
+                    <div class="step" id="step4">
+                        <i class="fas fa-download"></i>
+                        <span>Exportar</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Result Section -->
+            <section class="result-section glass-panel hidden" id="resultSection">
+                <div class="result-header">
+                    <h3><i class="fas fa-check-circle"></i> Transcrição Concluída</h3>
+                    <div class="result-stats">
+                        <span class="stat"><i class="fas fa-clock"></i> <span id="statDuration"></span></span>
+                        <span class="stat"><i class="fas fa-language"></i> <span id="statLanguage"></span></span>
+                        <span class="stat"><i class="fas fa-font"></i> <span id="statChars"></span></span>
+                    </div>
+                </div>
+                
+                <div class="transcription-preview">
+                    <textarea id="transcriptionText" readonly></textarea>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn-action" id="btnCopy">
+                        <i class="fas fa-copy"></i>
+                        <span>Copiar</span>
+                    </button>
+                    <button class="btn-action" id="btnDownloadTxt">
+                        <i class="fas fa-file-alt"></i>
+                        <span>TXT</span>
+                    </button>
+                    <button class="btn-action" id="btnDownloadDocx">
+                        <i class="fas fa-file-word"></i>
+                        <span>DOCX</span>
+                    </button>
+                    <button class="btn-action" id="btnDownloadPdf">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>PDF</span>
+                    </button>
+                    <button class="btn-action btn-secondary" id="btnNew">
+                        <i class="fas fa-redo"></i>
+                        <span>Nova Transcrição</span>
+                    </button>
+                </div>
+                
+                <!-- Audio Player -->
+                <div class="audio-player hidden" id="audioPlayer">
+                    <h4><i class="fas fa-headphones"></i> Áudio Extraído</h4>
+                    <audio id="audioElement" controls></audio>
+                    <a href="#" class="btn-download-audio" id="btnDownloadAudio">
+                        <i class="fas fa-download"></i> Baixar Áudio
+                    </a>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section class="error-section glass-panel hidden" id="errorSection">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Erro no Processamento</h3>
+                <p id="errorMessage"></p>
+                <button class="btn-primary" id="btnRetry">
+                    <i class="fas fa-redo"></i> Tentar Novamente
+                </button>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🔒 Processamento local e seguro • Seus arquivos não são enviados para nuvem</p>
+            <p class="version">v2027.1.0 • Powered by Whisper AI</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
